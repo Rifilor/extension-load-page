@@ -1,0 +1,160 @@
+@use './slyles/animation.scss';
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family:
+    'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
+    sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+span,
+div {
+  color: white;
+}
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Сховати стрілочки в Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+.flex {
+  display: flex;
+}
+.ml-auto {
+  margin-left: auto;
+}
+.items-center {
+  align-items: center;
+}
+.w-full {
+  width: 100%;
+}
+.ml-3 {
+  margin-left: 1rem;
+}
+
+input,
+textarea,
+select {
+  &:hover,
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+input:not([type='checkbox']),
+textarea,
+select {
+  padding: 0 10px;
+  box-sizing: border-box;
+  height: 28px;
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid rgba(256, 256, 256, 0.1);
+  color: white;
+  background-color: rgba(256, 256, 256, 0.05) !important;
+  outline: none;
+  &:focus {
+    border-color: #eac81f;
+  }
+}
+.btn-main {
+  color: #eac81f;
+  height: 28px;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid #eac81f;
+  transition: 0.1s linear;
+  &:hover {
+    background-color: #eac81f;
+    color: #232222;
+  }
+}
+.btn-delete {
+  color: #ba4242;
+  height: 28px;
+  padding: 0px 10px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 1px solid #ba4242;
+  transition: 0.1s linear;
+  &:hover {
+    background-color: #ba4242;
+    color: #232222;
+  }
+}
+
+.page-default {
+  padding: 20px;
+  padding-right: 5px;
+  display: flex;
+  flex-direction: column;
+  &__content {
+    padding-right: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  line-height: 26px;
+  font-weight: 700;
+  color: #eac81f;
+  &--medium {
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+.text {
+  font-size: 14px;
+  color: #cfcfcf;
+  line-height: 18px;
+  font-weight: 500;
+  &--bold {
+    font-weight: 700;
+  }
+  &--white {
+    color: #fff
+  }
+}
+.text-align-left {
+  text-align: left;
+}
+
+.mini-title {
+  text-align: left;
+  font-size: 16px;
+  line-height: 18px;
+  font-weight: 600;
+  color: #fff;
+}
