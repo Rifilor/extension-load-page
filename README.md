@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # chrome-extension-speed-test
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -31,3 +32,6 @@ npm run dev
 ```sh
 npm run build
 ```
+=======
+# extension-load-page
+>>>>>>> a72ffb9c32541a74ec35d5d8f3815d917dadbbc5
