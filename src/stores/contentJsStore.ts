@@ -138,7 +138,7 @@ export const useContentJsStore = defineStore('contentJs', {
                 action: methodName,
                 data: methodsData,
               },
-              (response) => {
+              (response: any) => {
                 // alert('await chrome.tabs.send - ' + response)
                 console.log('await chrome.tabs.sendM', JSON.stringify(response))
                 if (chrome.runtime.lastError) {

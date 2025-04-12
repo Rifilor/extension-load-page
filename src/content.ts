@@ -50,7 +50,7 @@ import { Page } from './modules/pageModule'
 // observeAndPatchResources()
 
 const func: IMethodsContent = {
-  test: async () => {
+  testLoadPage: async () => {
     try {
       console.log('Starting page analysis...')
       const page = new Page()
@@ -60,14 +60,12 @@ const func: IMethodsContent = {
       console.log('getResults:', page.getResults())
       // console.log('Resources:', metrics.resources)
       // console.log('metrics:', metrics)
-      console.log(1)
       chrome.runtime.sendMessage({
-        action: 'testResult',
+        action: 'testLoadPageResult',
         data: page.getResults(),
       })
       chrome.runtime.sendMessage({ action: 'sendData', data: 'Твої дані тут 11' })
 
-      console.log(2)
       // // Option 2: Log detailed information
       // await page.logAnalysisResults()
 
@@ -86,30 +84,30 @@ chrome.runtime.onMessage.addListener(
     sendResponse: any,
   ) => {
     console.log('message', message)
-    // if (message.action === 'test') {
-    try {
-      const method = func[message.action]
+    if (message.action === 'testLoadPage') {
+      try {
+        const method = func[message.action]
 
-      if (typeof method === 'function') {
-        if (method.length > 0 && message.data !== undefined) {
-          //@ts-ignore
-          method(message.data)
-        } else if (method.length === 0) {
-          method()
-        } else {
-          console.error(`Method ${message.action} expects no arguments but received data.`)
+        if (typeof method === 'function') {
+          if (method.length > 0 && message.data !== undefined) {
+            //@ts-ignore
+            method(message.data)
+          } else if (method.length === 0) {
+            method()
+          } else {
+            console.error(`Method ${message.action} expects no arguments but received data.`)
+          }
         }
+        sendResponse({ result: 'ok' }) // ОБОВ’ЯЗКОВО
+
+        return true
+      } catch (error) {
+        sendResponse({ result: 'ne ok' }) // ОБОВ’ЯЗКОВО
+
+        return false
       }
-      sendResponse({ result: 'ok' }) // ОБОВ’ЯЗКОВО
-
-      return true
-    } catch (error) {
-      sendResponse({ result: 'ne ok' }) // ОБОВ’ЯЗКОВО
-
-      return false
     }
   },
-  // },
 )
 
 console.log(323423423)

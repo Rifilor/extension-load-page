@@ -271,9 +271,8 @@ import type {
   INetworkSetting,
   IPerformanceResult,
   ICalculatedPerformance,
+  IResultsPageLoad,
 } from '@/types/Analize'
-import type { IframeHTMLAttributes } from 'vue'
-
 export class Page {
   private networkSettings: INetworkSetting | null
   private iframe: HTMLIFrameElement | null
@@ -444,11 +443,14 @@ export class Page {
     let entriesFilter: PerformanceEntry[] = entries
     const index: number = entriesFilter.findIndex((r: any) => r.initiatorType === 'iframe')
     entriesFilter = index !== -1 ? entriesFilter.slice(0, index) : entriesFilter
-    this.resources = entriesFilter
-      .filter((el: any) => el.entryType && el.entryType == 'resource')
-      .sort((a: any, b: any) => a.responseEnd - b.responseEnd)
+    this.resources = entriesFilter.sort((a: any, b: any) => a.responseEnd - b.responseEnd)
   }
-  public getResources(): PerformanceEntry[] {
+  public getResources(): PerformanceResourceTiming[] {
+    return this.resources.filter(
+      (el: any) => el.entryType && el.entryType == 'resource',
+    ) as PerformanceResourceTiming[]
+  }
+  public getRequests(): PerformanceEntry[] {
     return this.resources
   }
   private setNavigatorResult(navigatorConnection: INavigatorResult) {
@@ -524,9 +526,10 @@ export class Page {
     this.stopPage()
   }
 
-  public getResults(): any {
+  public getResults(): IResultsPageLoad {
     return {
       resources: this.getResources(),
+      allRequsts: this.getRequests(),
       navigator: this.getNavigatorResult(),
       performance: this.getPerformanceResult(),
       calculatedPerformance: this.getCalculatePerformance(),

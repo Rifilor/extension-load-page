@@ -1,14 +1,18 @@
 import { defineStore } from 'pinia'
 import { testInternetSpeed } from '@/utils/speed-test'
 import type { ISpeedTestResult } from '@/types/speedTest'
+import { useContentJsStore } from '@/stores/contentJsStore'
+import type { IResultsPageLoad } from '@/types/Analize'
 
 interface IState {
   speedTestResult: ISpeedTestResult | null
+  loadPageTestResult: IResultsPageLoad | null
 }
 
 export const useTestingStore = defineStore('testing', {
   state: (): IState => ({
     speedTestResult: null,
+    loadPageTestResult: null,
   }),
   actions: {
     async asyncGetSpeedTest(): Promise<void> {
@@ -22,6 +26,18 @@ export const useTestingStore = defineStore('testing', {
         console.error('Помилка отримання швидкості інтернета: ' + error)
         this.speedTestResult = null
         throw error
+      }
+    },
+    async asyncGetLoadPageDataTest(): Promise<void> {
+      const contentJs = useContentJsStore()
+      try {
+        const result = await contentJs.contentCallMethod('testLoadPage')
+        if (!result) {
+          throw new Error('Error during getting data from load page test')
+        }
+        this.loadPageTestResult = result
+      } catch (error) {
+        this.loadPageTestResult = null
       }
     },
   },

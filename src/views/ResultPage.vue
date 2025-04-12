@@ -6,9 +6,9 @@
         class="result__speed"
         v-if="speedTestResult"
         :speed-result="speedTestResult"
-        
       />
-      {{ result }}
+      <LoadTestViewResults class="result__load-page" />
+      {{ loadPageTestResult }}
     </div>
   </div>
 </template>
@@ -19,6 +19,7 @@ import { useTestingStore } from '@/stores/testingStore'
 import { useDataSettingsStore } from '@/stores/dataSettingsStore'
 import { storeToRefs } from 'pinia'
 import SpeedTestViewResults from '@/components/results/SpeedTestViewResults.vue'
+import LoadTestViewResults from '@/components/results/LoadTestViewResults.vue'
 import { useContentJsStore } from '@/stores/contentJsStore'
 
 //values
@@ -26,10 +27,10 @@ const contentJs = useContentJsStore()
 const testingStore = useTestingStore()
 const dataSettingsStore = useDataSettingsStore()
 const { isGlobalLoading } = storeToRefs(dataSettingsStore)
-const { speedTestResult } = storeToRefs(testingStore)
+const { speedTestResult, loadPageTestResult } = storeToRefs(testingStore)
 const metrics = ref<any>(null)
 const text = ref<string>('')
-const result = ref<any>(null)
+// const result = ref<any>(null)
 
 // const getData = () => {
 //   try {
@@ -59,7 +60,7 @@ onMounted(async () => {
   try {
     isGlobalLoading.value = true
     await testingStore.asyncGetSpeedTest()
-    result.value = await contentJs.contentCallMethod('test')
+    await testingStore.asyncGetLoadPageDataTest()
   } finally {
     isGlobalLoading.value = false
   }
@@ -70,6 +71,9 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .result {
   &__speed {
+    margin-top: 12px;
+  }
+  &__load-page {
     margin-top: 12px;
   }
 }

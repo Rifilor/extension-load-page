@@ -26,3 +26,10 @@ export interface ICalculatedPerformance {
   timeToFirstByte: number
   totalLoadPageEnd: number
 }
+export interface IResultsPageLoad {
+  resources: PerformanceResourceTiming[]
+  allRequsts: PerformanceEntry[]
+  navigator: INavigatorResult | null
+  performance: PerformanceNavigationTiming | null
+  calculatedPerformance: ICalculatedPerformance | null
+}
