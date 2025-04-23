@@ -1,4 +1,5 @@
 @use './slyles/animation.scss';
+@use './slyles/colors.scss';
 html,
 body {
   padding: 0;
@@ -144,7 +145,7 @@ select {
     font-weight: 700;
   }
   &--white {
-    color: #fff
+    color: #fff;
   }
 }
 .text-align-left {

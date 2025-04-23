@@ -8,6 +8,7 @@
         :speed-result="speedTestResult"
       />
       <LoadTestViewResults class="result__load-page" />
+      <TableResourcesReults class="result__resources" />
       {{ loadPageTestResult }}
     </div>
   </div>
@@ -21,6 +22,7 @@ import { storeToRefs } from 'pinia'
 import SpeedTestViewResults from '@/components/results/SpeedTestViewResults.vue'
 import LoadTestViewResults from '@/components/results/LoadTestViewResults.vue'
 import { useContentJsStore } from '@/stores/contentJsStore'
+import TableResourcesReults from '@/components/results/TableResourcesReults.vue'
 
 //values
 const contentJs = useContentJsStore()
@@ -59,7 +61,7 @@ onMounted(async () => {
   console.log('onMounted')
   try {
     isGlobalLoading.value = true
-    await testingStore.asyncGetSpeedTest()
+    // await testingStore.asyncGetSpeedTest()
     await testingStore.asyncGetLoadPageDataTest()
   } finally {
     isGlobalLoading.value = false
@@ -70,10 +72,9 @@ onMounted(async () => {
 </script>
 <style lang="scss" scoped>
 .result {
-  &__speed {
-    margin-top: 12px;
-  }
-  &__load-page {
+  &__speed,
+  &__load-page,
+  &__resources {
     margin-top: 12px;
   }
 }

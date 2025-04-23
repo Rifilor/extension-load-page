@@ -33,3 +33,8 @@ export interface IResultsPageLoad {
   performance: PerformanceNavigationTiming | null
   calculatedPerformance: ICalculatedPerformance | null
 }
+
+export interface IParseFormatTime {
+  time: number
+  typeTime: 'ms' | 's'
+}

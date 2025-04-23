@@ -64,7 +64,7 @@ const func: IMethodsContent = {
         action: 'testLoadPageResult',
         data: page.getResults(),
       })
-      chrome.runtime.sendMessage({ action: 'sendData', data: 'Твої дані тут 11' })
+      // chrome.runtime.sendMessage({ action: 'sendData', data: 'Твої дані тут 11' })
 
       // // Option 2: Log detailed information
       // await page.logAnalysisResults()
