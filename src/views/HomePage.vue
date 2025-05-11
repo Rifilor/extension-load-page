@@ -3,7 +3,7 @@
     <h1 class="title">PageSpeed Inspect</h1>
     <div class="page-home__content page-default__content">
       <div class="block-switch flex items-center w-full">
-        <p class="text text---bold text--white">Обмеження швидкості:</p>
+        <p class="text text---bold text--white">Додаткові тести швидкості:</p>
         <Switch class="ml-3" v-model="speedLimitTest" />
       </div>
       <Transition name="fade-slide">
@@ -47,12 +47,13 @@ import { useContentJsStore } from '@/stores/contentJsStore'
 const contentJs = useContentJsStore()
 const testingStore = useTestingStore()
 const dataSettingsStore = useDataSettingsStore()
-const { isGlobalLoading } = storeToRefs(dataSettingsStore)
-const speedLimitTest = ref<boolean>(false)
-const speedLimits = ref<ISettingsType[]>([])
-const speedTest = ref<boolean>(true)
-const loadRequestTest = ref<boolean>(true)
-const seoTest = ref<boolean>(true)
+const { isGlobalLoading, speedLimitTest, speedLimits, speedTest, loadRequestTest, seoTest } =
+  storeToRefs(dataSettingsStore)
+// const speedLimitTest = ref<boolean>(false)
+// const speedLimits = ref<ISettingsType[]>([])
+// const speedTest = ref<boolean>(true)
+// const loadRequestTest = ref<boolean>(true)
+// const seoTest = ref<boolean>(true)
 const router = useRouter()
 const text = ref<any>('')
 const result = ref<any>(null)

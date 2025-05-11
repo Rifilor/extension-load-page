@@ -1,63 +1,17 @@
-// import { testInternetSpeed } from '@/utils/speed-test'
-
 console.log('✅ Content script loaded 2!')
-
 import type { IMethodsContent } from './types/ContentMethods'
 import { Page } from './modules/pageModule'
-
-// const appendNoCacheParam = (url: string) => {
-//   if (!url) return url
-//   const sep = url.includes('?') ? '&' : '?'
-//   return `${url}${sep}nocache=${Date.now()}`
-// }
-
-// const updateSrcOrHref = (el: HTMLElement) => {
-//   if (el instanceof HTMLImageElement && el.src) {
-//     el.src = appendNoCacheParam(el.src)
-//   } else if (el instanceof HTMLScriptElement && el.src) {
-//     el.src = appendNoCacheParam(el.src)
-//   } else if (el instanceof HTMLLinkElement && el.href && el.rel === 'stylesheet') {
-//     el.href = appendNoCacheParam(el.href)
-//   }
-// }
-
-// const observeAndPatchResources = () => {
-//   const observer = new MutationObserver((mutations) => {
-//     for (const mutation of mutations) {
-//       for (const node of mutation.addedNodes) {
-//         if (!(node instanceof HTMLElement)) continue
-
-//         updateSrcOrHref(node)
-
-//         // обходимо дочірні елементи, якщо це контейнер
-//         node
-//           .querySelectorAll?.('img[src],script[src],link[rel="stylesheet"]')
-//           .forEach(updateSrcOrHref)
-//       }
-//     }
-//   })
-
-//   observer.observe(document.documentElement || document.body, {
-//     childList: true,
-//     subtree: true,
-//   })
-
-//   // одразу патчимо вже наявні елементи на сторінці
-//   document.querySelectorAll('img[src],script[src],link[rel="stylesheet"]').forEach(updateSrcOrHref)
-// }
-
-// // запускаємо
-// observeAndPatchResources()
+import { getAnalyzeSeo } from './utils/seo-analyze'
 
 const func: IMethodsContent = {
   testLoadPage: async () => {
     try {
-      console.log('Starting page analysis...')
+      // console.log('Starting page analysis...')
       const page = new Page()
 
       // Option 1: Get metrics
       await page.analyze()
-      console.log('getResults:', page.getResults())
+      // console.log('getResults:', page.getResults())
       // console.log('Resources:', metrics.resources)
       // console.log('metrics:', metrics)
       chrome.runtime.sendMessage({
@@ -75,6 +29,17 @@ const func: IMethodsContent = {
       console.error('Page analysis failed:', error)
     }
   },
+  analizeSeo: async () => {
+    try {
+      console.log('analizeSeo')
+      chrome.runtime.sendMessage({
+        action: 'analizeSeoResult',
+        data: getAnalyzeSeo(),
+      })
+    } catch (error) {
+      console.error('Seo analysis failed:', error)
+    }
+  },
 }
 
 chrome.runtime.onMessage.addListener(
@@ -84,29 +49,31 @@ chrome.runtime.onMessage.addListener(
     sendResponse: any,
   ) => {
     console.log('message', message)
-    if (message.action === 'testLoadPage') {
-      try {
-        const method = func[message.action]
-
-        if (typeof method === 'function') {
-          if (method.length > 0 && message.data !== undefined) {
-            //@ts-ignore
-            method(message.data)
-          } else if (method.length === 0) {
-            method()
-          } else {
-            console.error(`Method ${message.action} expects no arguments but received data.`)
-          }
+    // if (message.action === 'testLoadPage') {
+    try {
+      console.log(1)
+      const method = func[message.action]
+      console.log(typeof method)
+      if (typeof method === 'function') {
+        console.log(method.length > 0 && message.data !== undefined)
+        if (method.length > 0 && message.data !== undefined) {
+          //@ts-ignore
+          method(message.data)
+        } else if (method.length === 0) {
+          method()
+        } else {
+          console.error(`Method ${message.action} expects no arguments but received data.`)
         }
-        sendResponse({ result: 'ok' }) // ОБОВ’ЯЗКОВО
-
-        return true
-      } catch (error) {
-        sendResponse({ result: 'ne ok' }) // ОБОВ’ЯЗКОВО
-
-        return false
       }
+      sendResponse({ result: 'ok' }) // ОБОВ’ЯЗКОВО
+
+      return true
+    } catch (error) {
+      sendResponse({ result: 'ne ok' }) // ОБОВ’ЯЗКОВО
+
+      return false
     }
+    // }
   },
 )
 

@@ -4,12 +4,15 @@
       <h1 class="title text-align-left">Результат Аналізу:</h1>
       <SpeedTestViewResults
         class="result__speed"
-        v-if="speedTestResult"
+        v-if="speedTest && speedTestResult"
         :speed-result="speedTestResult"
       />
       <LoadTestViewResults class="result__load-page" />
-      <TableResourcesReults class="result__resources" />
-      {{ loadPageTestResult }}
+      <h3 v-if="loadRequestTest" class="text text---bold text--white result__resources-title">
+        Ресурси:
+      </h3>
+      <TableResourcesReults v-if="loadRequestTest" class="result__resources" />
+      <SeoAnalyzeViewResult v-if="seoTest" class="result__seo" />
     </div>
   </div>
 </template>
@@ -23,13 +26,14 @@ import SpeedTestViewResults from '@/components/results/SpeedTestViewResults.vue'
 import LoadTestViewResults from '@/components/results/LoadTestViewResults.vue'
 import { useContentJsStore } from '@/stores/contentJsStore'
 import TableResourcesReults from '@/components/results/TableResourcesReults.vue'
+import SeoAnalyzeViewResult from '@/components/results/SeoAnalyzeViewResult.vue'
 
 //values
 const contentJs = useContentJsStore()
 const testingStore = useTestingStore()
 const dataSettingsStore = useDataSettingsStore()
-const { isGlobalLoading } = storeToRefs(dataSettingsStore)
-const { speedTestResult, loadPageTestResult } = storeToRefs(testingStore)
+const { isGlobalLoading, speedTest, loadRequestTest, seoTest } = storeToRefs(dataSettingsStore)
+const { speedTestResult, loadPageTestResult, seoAnalizeResult } = storeToRefs(testingStore)
 const metrics = ref<any>(null)
 const text = ref<string>('')
 // const result = ref<any>(null)
@@ -61,8 +65,13 @@ onMounted(async () => {
   console.log('onMounted')
   try {
     isGlobalLoading.value = true
-    // await testingStore.asyncGetSpeedTest()
+    if (speedTest) {
+      await testingStore.asyncGetSpeedTest()
+    }
     await testingStore.asyncGetLoadPageDataTest()
+    if (seoTest) {
+      await testingStore.asyncGetSeoTestiongPage()
+    }
   } finally {
     isGlobalLoading.value = false
   }
@@ -74,8 +83,12 @@ onMounted(async () => {
 .result {
   &__speed,
   &__load-page,
-  &__resources {
+  &__resources-title,
+  &__seo {
     margin-top: 12px;
+  }
+  &__resources {
+    margin-top: 6px;
   }
 }
 </style>

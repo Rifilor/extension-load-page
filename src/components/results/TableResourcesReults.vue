@@ -64,10 +64,12 @@ const resources = computed((): PerformanceResourceTiming[] => {
   position: relative;
 
   &--title {
-    background-color: var(--bg-color);
     position: sticky;
     top: 0;
     z-index: 5;
+    & > * {
+      background-color: var(--bg-color);
+    }
   }
 
   & > * {
