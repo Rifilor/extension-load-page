@@ -1,8 +1,5 @@
-interface ISeoItem {
-  title: string
-  description: string
-  recomendation: string
-}
+import type { ISeoItem } from "@/types/Seo"
+
 export const getAnalyzeSeo = (): ISeoItem[] => {
   const results: ISeoItem[] = []
 
